@@ -1,0 +1,53 @@
+{% extends 'base/base.html' %}
+{%load staticfiles%}
+{% block content %}
+<body>
+        <div class="main-content">
+                <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+
+                </div>
+                <div class="container-fluid mt--7">
+                        <div class="row justify-content-center">
+                                <div class="col-xl-8 mb-5 mb-xl-0">
+                                        <div class="card bg-gradient-default shadow">
+                                                <div class="card-header bg-transparent">
+                                                        <div class="row align-items-center">
+                                                                <div class="col">
+                                                                       
+                                                                        <h2 class="text-white mb-0">Nueva publicacion</h2>
+                                                                </div>
+                                                        </div>
+                                                </div>
+                                                <div class="card-body">
+                                                        <form method="post">
+                                                                {% csrf_token %}
+                                                               
+                                                                {% for field in form%}
+                                                                <div class='row'>
+                                                                        <div class="col-md-12">
+                                                                            <div class="form-group">
+                                                                                    <label class="form-control-label text-white">{{ field.label_tag}}</label>
+                                                                                    {{field}}
+                                                                            </div>
+                                                                        </div>
+
+                                                                </div>
+                                                                
+                                                                {% endfor%}
+                                                                <div class="text-center">
+                                                                        <button type="submit" class="btn btn-primary mt-4">Publicar</button>
+                                                                </div>
+                                                        </form>
+                                                </div>
+                                        </div>
+                                </div>
+                        </div>
+
+                </div>
+
+        </div>
+    
+</body>
+
+{% endblock%}
+

@@ -1,0 +1,80 @@
+{% extends 'base/base.html' %}
+{% load staticfiles%}
+ 
+{% block header %}
+ <!-- Fonts -->
+ <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+ <!-- Icons -->
+ <link href="{% static 'vendor/nucleo/css/nucleo.css' %}" rel="stylesheet">
+ <link href="{% static 'vendor/@fortawesome/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
+ <!-- Argon CSS -->
+ <link type="text/css" href="{% static 'css/argon.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+
+
+
+{% block content %}
+<div class="main-content">
+    <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+      <div class="row justify-content-center">
+          <div class="col-lg-6 col-md-8">
+            <div class="card bg-secondary shadow border-0">
+              <div class="card-header bg-transparent pb-5">
+                <div class="text-muted text-center mt-2 mb-4"><small>Sign up with</small></div>
+                <div class="text-center">
+                  <a href="#" class="btn btn-neutral btn-icon mr-4">
+                    <span class="btn-inner--icon"><img src="{% static 'img/icons/common/github.svg' %}"></span>
+                    <span class="btn-inner--text">Github</span>
+                  </a>
+                  <a href="#" class="btn btn-neutral btn-icon">
+                    <span class="btn-inner--icon"><img src="{% static 'img/icons/common/google.svg' %}"></span>
+                    <span class="btn-inner--text">Google</span>
+                  </a>
+                </div>
+              </div>
+              <div class="card-body px-lg-5 py-lg-5">
+                <div class="text-center text-muted mb-4">
+                  <small>Or sign up with credentials</small>
+                </div>
+                <form method="POST" role="form">
+                      {% csrf_token %}
+                      {% for field in form %}
+                          <div class="form-group">
+                          <div class="input-group input-group-alternative mb-3">
+                              <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
+                              </div>
+                              
+                              {{ field.label_tag }}
+                              {{ field }}
+                              {% for error in field.errors %}
+                                  <p style="color: red">{{ error }}</p>
+                              {% endfor %}
+                          </div>
+                          </div>
+                      {% endfor %}
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-primary mt-4">Create account</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+    </div>
+  </div>
+  {% endblock %}
+
+
+
+  {%block footer%}
+  <!-- Argon Scripts -->
+   <!-- Core -->
+   <script src="{% static 'vendor/jquery/dist/jquery.min.js' %}"></script>
+   <script src="{% static 'vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+   <!-- Argon JS -->
+   <script src="{% static 'js/argon.js' %}"></script>
+ {% endblock %}

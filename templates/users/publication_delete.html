@@ -1,0 +1,10 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <h3>Desea eliminar el registro de {{publication.name}}</h3>
+   <button type="submit">Si, eliminar</button>
+   <a href="/users/publication_list/">Cancelar</a>
+</form>
+{% endblock%}
