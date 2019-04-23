@@ -58,9 +58,7 @@ class RegisterForm(forms.ModelForm):
             'address' : forms.TextInput(attrs={'class':'form-control '}),
             'city' : forms.TextInput(attrs={'class':'form-control'}),
             'country' : forms.TextInput(attrs={'class':'form-control'}),
-            'birthday': forms.DateInput(attrs={'class' : 'form-control'})
-
-            
+            'birthday': forms.DateInput(attrs={'class' : 'form-control'}) 
         }
         
 
