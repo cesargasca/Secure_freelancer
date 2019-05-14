@@ -121,6 +121,7 @@ class Skills(models.Model):
 class Publication(models.Model):
     '''publication model'''
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    freelancer = models.ForeignKey(User,related_name='freelancer_hired', null=True, on_delete = models.SET_NULL)
     name = models.CharField(max_length=50)
     overview = models.CharField(max_length=300)
     date = models.DateField(auto_now=True)
@@ -131,3 +132,4 @@ class Publication(models.Model):
     )
     budget = models.CharField(max_length=50, choices=BUDGET_CHOICES)
     skills = models.ManyToManyField(Skills)
+    progress =  models.IntegerField(default=0)

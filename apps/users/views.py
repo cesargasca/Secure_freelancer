@@ -54,11 +54,13 @@ def publication_new(request):
       form = PublicationForm(request.POST)
       context['form'] = form
       if form.is_valid():
-         form.save()
-      return redirect('sf:index')
+         np = form.save(commit=False)
+         np.user_id = request.user.id
+         np.save()
+      return HttpResponseRedirect(reverse('users:get_user_profile',kwargs={'username':request.user.username}))
    else:
       form = PublicationForm()
-   return render(request,'users/publication_form.html',{'form':form,'current_user':request.user})
+   return render(request,'users/publication_form.html/',{'form':form,'current_user':request.user})
 
 def publication_list(request):
    publications = Publication.object.all()
