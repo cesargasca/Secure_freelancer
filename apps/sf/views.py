@@ -13,9 +13,9 @@ def index(request):
         'current_user': current_user,
         }
     print("------->" + str(request.user.is_authenticated))
-    if request.user.is_authenticated:
+    if not request.user.is_authenticated:
         return render(request, 'sf:index.html', context)
     else:
-        return render(request,'users:userIndex.html',context)
+        return render(request,'users:user_index.html',context)
     
   

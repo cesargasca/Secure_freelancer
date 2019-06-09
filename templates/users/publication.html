@@ -1,0 +1,155 @@
+
+{% extends 'base/base.html' %}
+{% load staticfiles%}
+ 
+
+
+{% block content %}
+<body>
+    <div class="main-content">
+        <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+        </div>
+        <div class="container-fluid mt--7">
+          <div class="row mt-5">
+              <div class="col-xl-8 mb-5 mb-xl-0">
+                <div class="card bg-secondary shadow border-0">
+                  <div class="card-header bg-transparent pb-5">
+                    <div class="media align-items-center">
+                        <span class="avatar avatar-sm rounded-circle">
+                          <img alt="Image placeholder" src="{% static 'img/theme/personal-user-illustration-@2x.png' %}">
+                        </span>
+                        <div class="media-body ml-2 d-none d-lg-block">
+                          <span class="mb-4 text-sm  font-weight-bold">{{publication.user_id}}</span>
+                        </div>
+                        <div class="media-body ml-2 d-none d-lg-block">
+                                <span class="mb-4 text-sm  font-weight-bold">{{publication.date}}</span>
+                        </div>
+                      </div>
+        
+                  </div>
+                  <div class="card-body px-lg-5 py-lg-5">
+                    <h1>Nombre: {{publication.name}}</h1>
+                    <h1>Presupuesto: {{publication.budget}}</h1>
+                    <h1>Descripción:  </h1>
+                    <center><textarea disabled=true>{{publication.overview}}</textarea></center>
+                    {%if current_user.type_of_user == 'F'%}
+                    <center>
+                        <form action="{% url 'users:postularse' publication.id %}" method='POST'>
+                            {% csrf_token %}
+                            
+                            <button onclick ="myFunction()" class="btn btn-sm btn-primary" type='submit'>Postularse</button>
+
+                        </form>
+                    </center>
+                    {%endif%}
+                    <h1>Habilidades para este proyecto: <br/></h1>
+                    {%for s in skills%}
+                    <button type="button" class="btn btn-secondary">
+                      {{s.name}}
+                    </button>
+                        
+                    {%endfor%}
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-4">
+                  <div class="card shadow">
+                    <div class="card-header border-0">
+                      <div class="row align-items-center">
+                        <div class="col">
+                          <h3 class="mb-0">Postulados</h3>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="table-responsive">
+                      <!-- Projects table -->
+                      <table class="table align-items-center table-flush">
+                        <thead class="thead-light">
+                          <tr>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Estado</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {%for p in postulados%}
+                          <tr>
+                            <th> {{p.user_id}}</th>
+                            <th></th>
+                            {%if current_user.type_of_user == 'F' %}
+                            <th>{{p.state}}</th>
+                              {%if current_user.username == p.user_id and flag == True%}
+                              <th>
+                                  <form action="{% url 'users:show_contract' publication.id current_user.username%}" method='POST'>
+                                      {% csrf_token %}
+                                      <button class="btn btn-primary" type='submit'>Acordar</button>
+                                  </form>
+                              </th>
+                              {%endif%}
+                              
+                            {%else%}
+                            {%if not flag %}
+                              {%if p.state == "rechazado"%}
+                                <th>rechazado</th>
+                              {%else%}
+                                      <th>
+                                        
+                                          {% with "aceptado" as a%}
+                                          <form action="{% url 'users:aceptar_rechazar' publication.id p.user_id a%}" method='POST'>
+                                              {% csrf_token %}
+                                              <button class="btn btn-success" type='submit'>Aceptar</button>
+                                            </form>
+                                          {% endwith%}
+                                          
+                                        </th> 
+                                        <th>
+                                          {% with "rechazado" as n%}
+                                          <form action="{% url 'users:aceptar_rechazar' publication.id p.user_id n%}" method='POST'>
+                                            {% csrf_token %}
+                                            <button class="btn btn-danger" type='submit'>Rechazar</button>
+                                          </form>
+                                          {% endwith%}
+                                        </th> 
+                                {%endif%}
+                                        {%else%}
+                                <th>{{p.state}}</th>
+                                {%if p.state == "aceptado"%}
+                                <th>
+                                    <form action="{% url 'users:new_contract' publication.id p.user_id%}">
+                                        {% csrf_token %}
+                                        <button class="btn btn-primary" type='submit'>Acordar</button>
+                                    </form>
+                                </th>
+                                {%endif%}
+
+                                {%endif%}  
+                                             
+                            {%endif%}
+                          </tr>
+                          {%endfor%}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            
+    
+        </div>
+        
+      </div>
+      <h3>{{error}}</h3>
+</body>
+
+<script type="text/javascript">
+  function myFunction() {
+    var a = "{{error}}";
+    if(a > 0){
+      alert("Ya te has postulado anteriormente");
+    }
+      
+  }
+</script>
+  {% endblock %}
+
+

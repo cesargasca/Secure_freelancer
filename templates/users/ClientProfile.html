@@ -39,7 +39,11 @@
                   <div class="col-lg-3 order-lg-2">
                     <div class="card-profile-image">
                       <a href="#">
+                        {%if current_user.username == "Ronaldinho"%}
+                        <img src="{% static 'img/theme/r10.png' %}" class="rounded-circle">
+                        {%else%}
                         <img src="{% static 'img/theme/personal-user-illustration-@2x.png' %}" class="rounded-circle">
+                        {%endif%}
                       </a>
                     </div>
                   </div>
@@ -55,36 +59,31 @@
                     <div class="col">
                       <div class="card-profile-stats d-flex justify-content-center mt-md-5">
                         <div>
-                          <span class="heading">22</span>
-                          <span class="description">Friends</span>
+                          {%for i in "x"|ljust:current_user.calification%}
+                            <label for="radio1">★</label>
+                          {%endfor%}
+
                         </div>
-                        <div>
-                          <span class="heading">10</span>
-                          <span class="description">Photos</span>
-                        </div>
-                        <div>
-                          <span class="heading">89</span>
-                          <span class="description">Comments</span>
-                        </div>
+                        
                       </div>
                     </div>
                   </div>
                   <div class="text-center">
                     <h3>
-                      {{current_user.username}}<span class="font-weight-light">, 27</span>
+                      {{current_user.username}}<span class="font-weight-light">, {{age}}</span>
                     </h3>
                     <div class="h5 font-weight-300">
                       <i class="ni location_pin mr-2"></i>{{current_user.city}} , {{current_user.country}}
                     </div>
                     <div class="h5 mt-4">
-                      <i class="ni business_briefcase-24 mr-2"></i>Solution Manager - Creative Tim Officer
+                      <i class="ni business_briefcase-24 mr-2"></i>{{current_user.degree}}
                     </div>
                     <div>
-                      <i class="ni education_hat mr-2"></i>University of Computer Science
+                      <i class="ni education_hat mr-2"></i>{{current_user.education}}
                     </div>
                     <hr class="my-4" />
-                    <p>Ryan — the name taken by Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs and records all of his own music.</p>
-                    <a href="#">Show more</a>
+                    <p>{{current_user.about_me}}</p>
+                    
                   </div>
                 </div>
               </div>
@@ -94,7 +93,7 @@
                 <div class="card-header bg-white border-0">
                   <div class="row align-items-center">
                     <div class="col-8">
-                      <h3 class="mb-0">Proyectos recientes</h3>
+                      <h3 class="mb-0">Proyectos actuales</h3>
                     </div>
                     <div class="col-4 text-right">
                       <a href="{% url 'users:new_publication' %}" class="btn btn-sm btn-primary">Publicar</a>
@@ -128,6 +127,9 @@
                                         </div>
                                       </div>
                                     </div>
+                              </td>
+                              <td>
+                                <th> <a href="/users/publication/{{p.id}}/" class="btn btn-sm btn-primary">Ver</a> </th>
                               </td>
                             </tr>
                             {% endfor %}

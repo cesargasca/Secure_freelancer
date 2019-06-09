@@ -2,6 +2,7 @@
 from django import forms
 from apps.users.models import Publication
 from apps.users.models import User
+from apps.users.models import Contract
 from apps.users.models import generate_RSA
 from django.contrib.auth import authenticate, login
 class PublicationForm(forms.ModelForm):
@@ -27,6 +28,31 @@ class PublicationForm(forms.ModelForm):
             'skills' : forms.CheckboxSelectMultiple(),
         }
 
+class ContractForm(forms.ModelForm):
+    '''delivery = forms.DateTimeField(label="Fecha de entrega",
+        input_formats=['%Y/%m/%d'],
+        widget=forms.DateTimeInput(attrs={
+            'class': 'form-control datetimepicker-input',
+            'data-target': '#datetimepicker1'
+        })
+    )'''
+    class Meta:
+        model = Contract
+
+        fields = [
+            'delivery',
+            'payment',
+        ]
+        labels = {
+            'delivery' : 'Fecha de entrega',
+            'payment' : 'Pago',
+        }
+        widgets = {
+            'Fecha de entrega' : forms.DateInput(attrs={'class':'form-control'}),
+            'Pago' : forms.NumberInput(attrs={'class':'form-control'}),
+        }
+
+
 class RegisterForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
@@ -47,18 +73,24 @@ class RegisterForm(forms.ModelForm):
             'country': 'Pais',
             'postal_code': 'Codigo Postal',
             'birthday': 'Fecha de nacimiento',
+            'education': 'Educacion',
+            'about_me': 'Sobre mi',
+            'degree': 'Carrera'
         }
         
         widgets = {
             'username' : forms.TextInput(attrs={'class':'form-control '}),
             'email' : forms.EmailInput(attrs={'class':'form-control'}),
-            'type_of_user' : forms.TextInput(attrs={'class':'form-control '}),
+            'type_of_user' : forms.Select(attrs={'class':'form-control '}),
             'first_name' : forms.TextInput(attrs={'class':'form-control '}),
             'last_name' : forms.TextInput(attrs={'class':'form-control '}),
             'address' : forms.TextInput(attrs={'class':'form-control '}),
             'city' : forms.TextInput(attrs={'class':'form-control'}),
             'country' : forms.TextInput(attrs={'class':'form-control'}),
-            'birthday': forms.DateInput(attrs={'class' : 'form-control'}) 
+            'birthday': forms.DateInput(attrs={'class' : 'form-control'}), 
+            'education': forms.TextInput(attrs={'class':'form-control'}),
+            'degree': forms.TextInput(attrs={'class':'form-control'}),
+            'about_me': forms.TextInput(attrs={'class':'form-control'})
         }
         
 
@@ -77,6 +109,7 @@ class RegisterForm(forms.ModelForm):
         user.active = True # send confirmation email
         keys = generate_RSA()
         user.public_key = keys[1]
+        user.private_key = keys[0]
         if commit:
             user.save()
         return user
